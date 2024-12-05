@@ -239,9 +239,11 @@ class Game2 {
                                     livesLabel.setText("Lives: " + lives);
 
                                     if (lives == 0) {
-                                        JOptionPane.showMessageDialog(frame, "Game Over! Your score: " + score);
-                                        System.exit(0);
+                                        MissionFailed missionFailed = new MissionFailed();
+                                        missionFailed.showMissionFailed();
+                                        frame.dispose();
                                     }
+
                                 }
                                 hideCardTimer.start();
                             } else {
@@ -250,6 +252,13 @@ class Game2 {
 
                                 card1Selected = null;
                                 card2Selected = null;
+                            }
+                            if (allCardsFaceUp()) {
+                                MissionComplete dialog = new MissionComplete();
+                                dialog.showMissionComplete();
+                                frame.dispose();
+
+                                ///lalagay dito ung pagbalik sa roadmap
                             }
                         }
                     }
@@ -317,6 +326,15 @@ class Game2 {
             }
             gameReady = true;
         }
+    }
+
+    private boolean allCardsFaceUp() {
+        for (JButton card : board) {
+            if (card.getIcon() == cardBackImageIcon) {
+                return false; // Found a card that is still face down
+            }
+        }
+        return true; // All cards are face up
     }
 
     // Custom JPanel class to display background image
